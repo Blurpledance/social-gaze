@@ -1,0 +1,54 @@
+Stimuli are computer generated floating head models. Video typer =.avi
+64 unique stimuli.
+8 unique identies.
+Identity race is a 50/50 split between black and white.
+	Black = f6, f8, m7, m8
+	White = f1, f2, m1, m4
+Identitfy sex is a 50/50 split between male and female.
+	Females = f1, f2, f6, f8
+	Males = m1, m4, m7, m8
+8 varaiations per identity. Each variation a combination of 6 dichotomous features (Eye Contact, direction,speed)
+	Eye contact stimuli (labeled EC)
+	No eye contact stimuli (labeled NC)
+	Direction =  The direction the stimuli turn from (labeled Left or Right)
+	Speed =  How speed at which the stimuli turn to center (fast = 2) (slow = 3)
+#################################################################################################################################
+Example label for a stimuli using identity m1 that is fast, makes eye contact, and turns from the right : m1_EC_right_3
+#################################################################################################################################
+Faces are divied into two blocks (majority eye contact, and majority no eye contact)
+	Each block contains 48 stimuli (a total of 96 are viewed) 
+	67% of the stimuli in the majority eye contact block make eye contact (EC).
+	67% of the stimuli in the majority no eye contact block do not make eye contact (NC).
+Additionally, these blocks are randomly assigned to be either active or passive.
+	Passive blocks require participants to passively view the stimuli.
+	Active blocks ask particpants to indicate with the arrow keys, whihc direction the stimuli turned from.
+#################################################################################################################################
+Digital input numbers are assigned to each stimuli so that acqKnowledge is able to acurately track on the onset and offset of each stimuli to the participant's physio acitivty.
+Either a 0 or 1 is assigned to each of the previously desicribe stimuli features (sex, race, eye contact, direction, speed), as well as which block they are in (passive or active)
+Sex: 0=male 1=female
+Race: 0=white, 1=black
+Direction: 0=right, 1=left
+Speed: 0=2, 1=3
+Eye contact: 0=EC, 1=NC
+Block majority: 0=NC, 1=EC
+Block type: 0=Passive, 1=Active
+################################################################################################################################
+m1_EC_right_3 in an active majority eye contact block would have a DIN of 0001011
+################################################################################################################################
+Experimental procedure.
+Participant arrives.
+EKG and EDA sensors are applied to the participant.
+Physio data is collected via BioPac, and recorded on the program AcqKnowledge.
+Open the command prompt.
+Call python.
+Run the file titled "Experiment_PC_Final"
+Enter the participant number into the resulting window.
+Baseline data is collected for five minutes. Instructions are displayed.
+At the start of the baseline period a digital input number is used to denote in the AcqKnowledge file when the exact start and stop time for the baseline period is.
+Upon completion of the baseline period, instructions for the task are displayed.
+Participants begin task.
+Before stimuli presentation, an fixation cross, acompanied by an orienting sound, appears for 250 ms.
+Stimuli are presented for 7 seconds at a time (4 seconds of video, 3 seconds of paused image). The appropriate DIN acompanies each stimuli and is recorded in the AcqKnowledge program.
+Inter-stimulus duration equals 8s (8.25 if not including fixation cross). 
+After the presentation of all 48 stimuli in the first block, there is a 2 minute waiting period before the second block.
+The second block is presented (if the first was passive, the second is active. IF the first was majority EC, the second is majority NC).

@@ -5,31 +5,30 @@
 
 Stimuli are computer generated floating head models (video type = .avi).
 
-- 64 unique stimuli.
-- 8 unique identies.
+- 192 unique stimuli
+- 8 unique identities
 
 Identity race is a 50/50 split between black and white.
 
-- Black = f6, f8, m7, m8
-- White = f1, f2, m1, m4
+- White = 1, 2, 3, 4
+- Black = 5, 6, 7, 8
 
-Identitfy sex is a 50/50 split between male and female.
+Identity sex is a 50/50 split between male and female.
 
-- Females = f1, f2, f6, f8
-- Males = m1, m4, m7, m8
+- Females = f
+- Males = m
 
-8 varaiations per identity. Each variation a combination of 6 dichotomous features (Eye Contact, direction,speed)
+8 variations per identity. Each variation a combination of 6 dichotomous features (Eye Contact, direction, speed)
 
-- Eye contact stimuli (labeled EC)
-- No eye contact stimuli (labeled NC)
+- Gaze = Eye contact or No eye contact (labeled EC or NC)
 - Direction =  The direction the stimuli turn from (labeled Left or Right)
 - Speed =  How speed at which the stimuli turn to center (fast = 2) (slow = 3)
 
-Example label for a stimuli using identity m1 that is fast, makes eye contact, and turns from the right : m1_EC_right_3
+Example label for a stimuli using identity m_1 that is fast, makes eye contact, and turns from the right : m_1_EC_right_3
 
 ## Trials
 
-Faces are divied into two blocks (majority eye contact, and majority no eye contact)
+Faces are divided into two blocks (majority eye contact, and majority no eye contact)
 
 - Each block contains 48 stimuli (a total of 96 are viewed)
 - 67% of the stimuli in the majority eye contact block make eye contact (EC).
@@ -37,7 +36,7 @@ Faces are divied into two blocks (majority eye contact, and majority no eye cont
 
 Additionally, these blocks are randomly assigned to be either active or passive.
 - Passive blocks require participants to passively view the stimuli.
-- Active blocks ask particpants to indicate with the arrow keys, whihc direction the stimuli turned from.
+- Active blocks ask participants to indicate with the arrow keys, which direction the stimuli turned from.
 
 Digital input numbers are assigned to each stimuli so that acqKnowledge is able to acurately track on the onset and offset of each stimuli to the participant's physio acitivty.
 
@@ -71,4 +70,3 @@ m1_EC_right_3 in an active majority eye contact block would have a DIN of 000101
 1. Inter-stimulus duration equals 8s (8.25 if not including fixation cross).
 1. After the presentation of all 48 stimuli in the first block, there is a 2 minute waiting period before the second block.
 1. The second block is presented (if the first was passive, the second is active. IF the first was majority EC, the second is majority NC).
-

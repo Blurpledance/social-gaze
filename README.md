@@ -55,20 +55,20 @@ m1_EC_right_3 in an active majority eye contact block would have a DIN of 000101
 
 ## Procedure
 
-#. Participant arrives.
-#. EKG and EDA sensors are applied to the participant.
-#. Physio data is collected via BioPac, and recorded on the program AcqKnowledge.
-#. Open the command prompt.
-#. Call python.
-#. Run the file titled "Experiment_PC_Final"
-#. Enter the participant number into the resulting window.
-#. Baseline data is collected for five minutes. Instructions are displayed.
-#. At the start of the baseline period a digital input number is used to denote in the AcqKnowledge file when the exact start and stop time for the baseline period is.
-#. Upon completion of the baseline period, instructions for the task are displayed.
-#. Participants begin task.
-#. Before stimuli presentation, an fixation cross, acompanied by an orienting sound, appears for 250 ms.
-#. Stimuli are presented for 7 seconds at a time (4 seconds of video, 3 seconds of paused image). The appropriate DIN acompanies each stimuli and is recorded in the AcqKnowledge program.
-#. Inter-stimulus duration equals 8s (8.25 if not including fixation cross).
-#. After the presentation of all 48 stimuli in the first block, there is a 2 minute waiting period before the second block.
-#. The second block is presented (if the first was passive, the second is active. IF the first was majority EC, the second is majority NC).
+1. Participant arrives.
+1. EKG and EDA sensors are applied to the participant.
+1. Physio data is collected via BioPac, and recorded on the program AcqKnowledge.
+1. Open the command prompt.
+1. Call python.
+1. Run the file titled "Experiment_PC_Final"
+1. Enter the participant number into the resulting window.
+1. Baseline data is collected for five minutes. Instructions are displayed.
+1. At the start of the baseline period a digital input number is used to denote in the AcqKnowledge file when the exact start and stop time for the baseline period is.
+1. Upon completion of the baseline period, instructions for the task are displayed.
+1. Participants begin task.
+1. Before stimuli presentation, an fixation cross, acompanied by an orienting sound, appears for 250 ms.
+1. Stimuli are presented for 7 seconds at a time (4 seconds of video, 3 seconds of paused image). The appropriate DIN acompanies each stimuli and is recorded in the AcqKnowledge program.
+1. Inter-stimulus duration equals 8s (8.25 if not including fixation cross).
+1. After the presentation of all 48 stimuli in the first block, there is a 2 minute waiting period before the second block.
+1. The second block is presented (if the first was passive, the second is active. IF the first was majority EC, the second is majority NC).
 

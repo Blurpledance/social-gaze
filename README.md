@@ -35,12 +35,13 @@ Faces are divided into two blocks (majority eye contact, and majority no eye con
 - 67% of the stimuli in the majority no eye contact block do not make eye contact (NC).
 
 Additionally, these blocks are randomly assigned to be either active or passive.
+
 - Passive blocks require participants to passively view the stimuli.
 - Active blocks ask participants to indicate with the arrow keys, which direction the stimuli turned from.
 
-Digital input numbers are assigned to each stimuli so that acqKnowledge is able to acurately track on the onset and offset of each stimuli to the participant's physio acitivty.
+Digital input numbers are assigned to each stimuli so that acqKnowledge is able to accurately track on the onset and offset of each stimuli to the participant's physio activity.
 
-Either a 0 or 1 is assigned to each of the previously desicribe stimuli features (sex, race, eye contact, direction, speed), as well as which block they are in (passive or active)
+Either a 0 or 1 is assigned to each of the previously describe stimuli features (sex, race, eye contact, direction, speed), as well as which block they are in (passive or active)
 
 - Sex: 0=male 1=female
 - Race: 0=white, 1=black
@@ -65,8 +66,8 @@ m1_EC_right_3 in an active majority eye contact block would have a DIN of 000101
 1. At the start of the baseline period a digital input number is used to denote in the AcqKnowledge file when the exact start and stop time for the baseline period is.
 1. Upon completion of the baseline period, instructions for the task are displayed.
 1. Participants begin task.
-1. Before stimuli presentation, an fixation cross, acompanied by an orienting sound, appears for 250 ms.
-1. Stimuli are presented for 7 seconds at a time (4 seconds of video, 3 seconds of paused image). The appropriate DIN acompanies each stimuli and is recorded in the AcqKnowledge program.
+1. Before stimuli presentation, an fixation cross, accompanied by an orienting sound, appears for 250 ms.
+1. Stimuli are presented for 7 seconds at a time (4 seconds of video, 3 seconds of paused image). The appropriate DIN accompanies each stimuli and is recorded in the AcqKnowledge program.
 1. Inter-stimulus duration equals 8s (8.25 if not including fixation cross).
 1. After the presentation of all 48 stimuli in the first block, there is a 2 minute waiting period before the second block.
 1. The second block is presented (if the first was passive, the second is active. IF the first was majority EC, the second is majority NC).

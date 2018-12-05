@@ -4,6 +4,10 @@ import pandas
 import numpy
 
 
+# read in the stim info
+stim_info = pandas.read_csv("stim_info.csv")
+
+
 def generate_trials(subj_id, seed=None):
 
     # initialize a pseudo random number generator
@@ -17,22 +21,52 @@ def generate_trials(subj_id, seed=None):
     if not os.path.isdir(trials_dir):
         os.mkdir(trials_dir)
 
-    # read in the stim info
-    stim_info = pandas.read_csv("stim_info.csv")
+    # generate two blocks of trials: one majority eye contact, one majority no eye contact
+    majority_eye_contact_trials = generate_majority_eye_contact_block(random)
+    majority_no_eye_contact_trials = generate_majority_no_eye_contact_block(random)
 
-    # create trials from stim info
-    trials = stim_info.copy()
+    # randomly assign block order
+    blocks = [majority_eye_contact_trials, majority_no_eye_contact_trials]
+    random.shuffle(blocks)
 
-    # shuffle the trials
-    trials = trials.sample(len(trials), random_state=random)
+    # glue the two blocks of trials together into a single dataframe
+    trials = pandas.concat(blocks, keys=[1, 2], names=["block_ix"]).reset_index(level=0)
 
-    # insert columns
+    # randomly assign blocks to either active or passive response types
+    response_types = ["active", "passive"]
+    random.shuffle(response_types)
+    response_type_map = pandas.DataFrame({"block_ix": [1, 2], "response_type": response_types})
+    trials = trials.merge(response_type_map)
+
+    # insert additional columns
     trials.insert(0, "subj_id", subj_id)
-    trials.insert(1, "trial_ix", list(range(len(stim_info))))
+    trials.insert(1, "trial_ix", list(range(len(trials))))
 
     # write trials to a file
     subj_trials_path = os.path.join(trials_dir, "trials-{subj_id}.csv".format(subj_id=subj_id))
     trials.to_csv(subj_trials_path, index=False)
+
+
+def generate_majority_eye_contact_block(random):
+    # TODO: sample the correct number of eye contact and no eye contact trials
+    # HINT: why does this function require a numpy.random.RandomState object?
+    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :]
+    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :]
+    trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
+    # TODO: shuffle the trials in the block
+    trials["block_type"] = "majority_eye_contact"
+    return trials
+
+
+def generate_majority_no_eye_contact_block(random):
+    # TODO: sample the correct number of eye contact and no eye contact trials
+    # HINT: why does this function require a numpy.random.RandomState object?
+    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :]
+    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :]
+    trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
+    # TODO: shuffle the trials in the block
+    trials["block_type"] = "majority_no_eye_contact"
+    return trials
 
 
 if __name__ == "__main__":

@@ -39,9 +39,8 @@ def generate_trials(subj_id, seed=None):
     trials.insert(0, "subj_id", subj_id)
     trials.insert(1, "trial_ix", list(range(len(trials))))
 
-    # write trials to a file
-    subj_trials_path = os.path.join(trials_dir, "trials-{subj_id}.csv".format(subj_id=subj_id))
-    trials.to_csv(subj_trials_path, index=False)
+    return trials
+
 
 
 def generate_majority_eye_contact_block(random):
@@ -73,4 +72,8 @@ if __name__ == "__main__":
     parser.add_argument("subj_id")
     parser.add_argument("--seed", type=int)
     args = parser.parse_args()
-    generate_trials(args.subj_id, seed=args.seed)
+    trials = generate_trials(args.subj_id, seed=args.seed)
+
+    # write trials to a file
+    subj_trials_path = os.path.join(trials_dir, "trials-{subj_id}.csv".format(subj_id=subj_id))
+    trials.to_csv(subj_trials_path, index=False)

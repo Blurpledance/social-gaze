@@ -1,15 +1,21 @@
 import yaml
-from psychopy import visual, event, core, sound
+from psychopy import visual, event, core, sound, gui
+
+from generate_trials import generate_trials
 
 
 class Experiment:
-    def __init__(self):
+    def __init__(self, subj_id):
         """Initialize the experiment.
 
-        >>> experiment = Experiment()
+        Args:
+            subj_id (str): identifier for subject
+
+        >>> experiment = Experiment("SUBJ100")
         """
         self.texts = yaml.load(open("texts.yaml"))
         self.win = visual.Window(units="pix")
+        self.trials = generate_trials(subj_id=subj_id)
 
         self.fix = visual.TextStim(self.win, text="+", color="white")
         self.noise = sound.Sound("noise.wav")
@@ -17,8 +23,8 @@ class Experiment:
     def __call__(self):
         """Run the experiment.
 
-        >>> experiment = Experiment()  # initialize the experiment
-        >>> experiment()               # call the experiment to run it
+        >>> experiment = Experiment("SUBJ100")  # initialize the experiment
+        >>> experiment()                        # call the experiment to run it
         """
         self.show_instructions()
         self.run_trial()
@@ -60,14 +66,25 @@ class Experiment:
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
+    parser.add_argument("--subj-id")
     parser.add_argument("--show-instructions", action="store_true")
     parser.add_argument("--run-trial", action="store_true")
     args = parser.parse_args()
 
-    experiment = Experiment()  # initialize the experiment
+    if args.subj_id is None:
+        runtime_vars = {"subj_id": "SUBJ100"}
+        dlg = gui.DlgFromDict(runtime_vars)
+        if not dlg.OK:
+            core.quit()
+        args.subj_id = runtime_vars["subj_id"]
+
+    # Initialize the experiment
+    experiment = Experiment(subj_id=args.subj_id)
+
     if args.show_instructions:
         experiment.show_instructions()
     elif args.run_trial:
         experiment.run_trial()
     else:
+        # Run the whole experiment
         experiment()

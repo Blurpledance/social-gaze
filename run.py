@@ -58,5 +58,16 @@ class Experiment:
 
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--show-instructions", action="store_true")
+    parser.add_argument("--run-trial", action="store_true")
+    args = parser.parse_args()
+
     experiment = Experiment()  # initialize the experiment
-    experiment()               # call the experiment to run it
+    if args.show_instructions:
+        experiment.show_instructions()
+    elif args.run_trial:
+        experiment.run_trial()
+    else:
+        experiment()

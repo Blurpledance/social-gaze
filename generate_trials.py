@@ -32,11 +32,8 @@ def generate_trials(subj_id, seed=None):
     # glue the two blocks of trials together into a single dataframe
     trials = pandas.concat(blocks, keys=[1, 2], names=["block_ix"]).reset_index(level=0)
 
-    # randomly assign blocks to either active or passive response types
-    response_types = ["active", "passive"]
-    random.shuffle(response_types)
-    response_type_map = pandas.DataFrame({"block_ix": [1, 2], "response_type": response_types})
-    trials = trials.merge(response_type_map)
+    # set response type for all trials to active
+    trials["response_type"] = "active"
 
     # insert additional columns
     trials.insert(0, "subj_id", subj_id)
@@ -50,10 +47,11 @@ def generate_trials(subj_id, seed=None):
 def generate_majority_eye_contact_block(random):
     # TODO: sample the correct number of eye contact and no eye contact trials
     # HINT: why does this function require a numpy.random.RandomState object?
-    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :]
-    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :]
+    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :].sample(n=13, random_state=random)
+    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :].sample(n=7, random_state=random)
     trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
     # TODO: shuffle the trials in the block
+    trials = trials.sample(len(trials), random_state=random)
     trials["block_type"] = "majority_eye_contact"
     return trials
 

@@ -16,11 +16,6 @@ def generate_trials(subj_id, seed=None):
         seed = int(str(subj_id_hash)[-6:])
     random = numpy.random.RandomState(seed=seed)
 
-    # create the trials dir if it doesn't exist
-    trials_dir = "trials"
-    if not os.path.isdir(trials_dir):
-        os.mkdir(trials_dir)
-
     # generate two blocks of trials: one majority eye contact, one majority no eye contact
     majority_eye_contact_trials = generate_majority_eye_contact_block(random)
     majority_no_eye_contact_trials = generate_majority_no_eye_contact_block(random)
@@ -38,6 +33,9 @@ def generate_trials(subj_id, seed=None):
     # insert additional columns
     trials.insert(0, "subj_id", subj_id)
     trials.insert(1, "trial_ix", list(range(len(trials))))
+
+    # add path to filename
+    trials.loc[:, "filename"] = trials.filename.apply(lambda filename: os.path.join("vids", filename))
 
     return trials
 
@@ -75,5 +73,5 @@ if __name__ == "__main__":
     trials = generate_trials(args.subj_id, seed=args.seed)
 
     # write trials to a file
-    subj_trials_path = os.path.join(trials_dir, "trials-{subj_id}.csv".format(subj_id=subj_id))
+    subj_trials_path = "trials-{subj_id}.csv".format(subj_id=args.subj_id)
     trials.to_csv(subj_trials_path, index=False)

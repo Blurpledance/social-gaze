@@ -27,7 +27,9 @@ class Experiment:
         >>> experiment()                        # call the experiment to run it
         """
         self.show_instructions()
-        self.run_trial()
+
+        for _, trial in self.trials.iterrows():
+            self.run_trial(trial)
 
     def show_instructions(self):
         instructions = visual.TextStim(self.win, text=self.texts["instructions"], color="white")
@@ -35,8 +37,8 @@ class Experiment:
         self.win.flip()
         event.waitKeys()
 
-    def run_trial(self):
-        mov = visual.MovieStim(self.win, filename="vids/f_1_EC_L.mp4")
+    def run_trial(self, trial):
+        mov = visual.MovieStim(self.win, filename=trial["filename"])
 
         self.fix.draw()
         self.win.flip()
@@ -48,9 +50,11 @@ class Experiment:
         while timer.getTime() < 4:
             mov.draw()
             self.win.flip()
-            response = event.getKeys(keyList=["right", "left"], timeStamped=timer)
+            response = event.getKeys(keyList=["right", "left", "q"], timeStamped=timer)
             if len(response) > 0:
                 key, rt = response[0]
+                if key == "q":
+                    core.quit()
                 break
         else:
             print("no response!")
@@ -84,7 +88,7 @@ if __name__ == "__main__":
     if args.show_instructions:
         experiment.show_instructions()
     elif args.run_trial:
-        experiment.run_trial()
+        experiment.run_trial({"filename": "vids/f_1_EC_L.mp4"})
     else:
         # Run the whole experiment
         experiment()

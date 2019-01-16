@@ -16,6 +16,7 @@ class Experiment:
         self.texts = yaml.load(open("texts.yaml"))
         self.win = visual.Window(units="pix")
         self.trials = generate_trials(subj_id=subj_id)
+        self.datafile = open("{subj_id}.csv".format(subj_id=subj_id), "w", 0)
 
         self.fix = visual.TextStim(self.win, text="+", color="white")
         self.noise = sound.Sound("noise.wav")
@@ -29,7 +30,8 @@ class Experiment:
         self.show_instructions()
 
         for _, trial in self.trials.iterrows():
-            self.run_trial(trial)
+            trial_data = self.run_trial(trial)
+            self.write_trial_data(trial_data)
 
     def show_instructions(self):
         instructions = visual.TextStim(self.win, text=self.texts["instructions"], color="white")
@@ -64,7 +66,11 @@ class Experiment:
             "rt": rt,
         }
 
-        print(trial_data)
+        return trial_data
+
+    def write_trial_data(self, trial_data):
+        row = ",".join(map(str, trial_data.values()))
+        self.datafile.write(row + "\n")
 
 
 if __name__ == "__main__":
@@ -88,7 +94,8 @@ if __name__ == "__main__":
     if args.show_instructions:
         experiment.show_instructions()
     elif args.run_trial:
-        experiment.run_trial({"filename": "vids/f_1_EC_L.mp4"})
+        trial_data = experiment.run_trial({"filename": "vids/f_1_EC_L.mp4"})
+        print(trial_data)
     else:
         # Run the whole experiment
         experiment()

@@ -27,7 +27,7 @@ class Experiment:
         self.datafile = open("{subj_id}.csv".format(subj_id=subj_id), "w", 0)
 
         self.fix = visual.TextStim(self.win, text="+", color="white")
-        self.noise = sound.Sound("noise.wav")
+        self.noise = sound.Sound("stimuli/sounds/noise.wav")
 
     def __call__(self):
         """Run the experiment.
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     if args.show_instructions:
         experiment.show_instructions()
     elif args.run_trial:
-        trial_data = experiment.run_trial({"filename": "vids/f_1_EC_L.mp4"})
+        trial_data = experiment.run_trial({"filename": "stimuli/videos/f_1_EC_L.mp4"})
         print(trial_data)
     else:
         # Run the whole experiment

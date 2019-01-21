@@ -4,8 +4,8 @@ import pandas
 import numpy
 
 
-# read in the stim info
-stim_info = pandas.read_csv("stim_info.csv")
+# read in the video info
+video_info = pandas.read_csv("video_info.csv")
 
 
 def generate_trials(subj_id, seed=None):
@@ -35,7 +35,7 @@ def generate_trials(subj_id, seed=None):
     trials.insert(1, "trial_ix", list(range(len(trials))))
 
     # add path to filename
-    trials.loc[:, "filename"] = trials.filename.apply(lambda filename: os.path.join("vids", filename))
+    trials.loc[:, "filename"] = trials.filename.apply(lambda filename: os.path.join("stimuli/videos", filename))
 
     return trials
 
@@ -44,8 +44,8 @@ def generate_trials(subj_id, seed=None):
 def generate_majority_eye_contact_block(random):
     # TODO: sample the correct number of eye contact and no eye contact trials
     # HINT: why does this function require a numpy.random.RandomState object?
-    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :].sample(n=13, random_state=random)
-    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :].sample(n=7, random_state=random)
+    eye_contact_trials = video_info.loc[video_info.gaze == "EC", :].sample(n=13, random_state=random)
+    no_eye_contact_trials = video_info.loc[video_info.gaze == "NC", :].sample(n=7, random_state=random)
     trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
     # TODO: shuffle the trials in the block
     trials = trials.sample(len(trials), random_state=random)
@@ -56,8 +56,8 @@ def generate_majority_eye_contact_block(random):
 def generate_majority_no_eye_contact_block(random):
     # TODO: sample the correct number of eye contact and no eye contact trials
     # HINT: why does this function require a numpy.random.RandomState object?
-    eye_contact_trials = stim_info.loc[stim_info.gaze == "EC", :]
-    no_eye_contact_trials = stim_info.loc[stim_info.gaze == "NC", :]
+    eye_contact_trials = video_info.loc[video_info.gaze == "EC", :]
+    no_eye_contact_trials = video_info.loc[video_info.gaze == "NC", :]
     trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
     # TODO: shuffle the trials in the block
     trials["block_type"] = "majority_no_eye_contact"

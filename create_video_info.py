@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-"""Create a csv of stimuli with data extracted from filenames."""
+"""Create a csv of video data extracted from filenames."""
 import os
 import pandas
 
 
 def create_stim_info():
-    filenames = [x for x in os.listdir("vids") if x.endswith(".mp4")]
+    filenames = [x for x in os.listdir("stimuli/videos") if x.endswith(".mp4")]
 
     # filenames = []
     # for x in os.listdir("vids"):
@@ -28,4 +28,4 @@ def create_stim_info():
 
 if __name__ == "__main__":
     stim_info = create_stim_info()
-    stim_info.to_csv("stim_info.csv", index=False)
+    stim_info.to_csv("video_info.csv", index=False)

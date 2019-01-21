@@ -4,6 +4,14 @@ from psychopy import visual, event, core, sound, gui
 from generate_trials import generate_trials
 
 
+def get_runtime_vars():
+    runtime_vars = {"subj_id": "SUBJ100"}
+    dlg = gui.DlgFromDict(runtime_vars)
+    if not dlg.OK:
+        core.quit()
+    return runtime_vars
+
+
 class Experiment:
     def __init__(self, subj_id):
         """Initialize the experiment.
@@ -81,15 +89,13 @@ if __name__ == "__main__":
     parser.add_argument("--run-trial", action="store_true")
     args = parser.parse_args()
 
-    if args.subj_id is None:
-        runtime_vars = {"subj_id": "SUBJ100"}
-        dlg = gui.DlgFromDict(runtime_vars)
-        if not dlg.OK:
-            core.quit()
-        args.subj_id = runtime_vars["subj_id"]
+    subj_id = args.subj_id
+    if subj_id is None:
+        runtime_vars = get_runtime_vars()
+        subj_id = runtime_vars["subj_id"]
 
     # Initialize the experiment
-    experiment = Experiment(subj_id=args.subj_id)
+    experiment = Experiment(subj_id=subj_id)
 
     if args.show_instructions:
         experiment.show_instructions()

@@ -56,8 +56,8 @@ def generate_majority_eye_contact_block(random):
 def generate_majority_no_eye_contact_block(random):
     # TODO: sample the correct number of eye contact and no eye contact trials
     # HINT: why does this function require a numpy.random.RandomState object?
-    eye_contact_trials = video_info.loc[video_info.gaze == "EC", :]
-    no_eye_contact_trials = video_info.loc[video_info.gaze == "NC", :]
+    eye_contact_trials = video_info.loc[video_info.gaze == "EC", :].sample(n=7, random_state=random)
+    no_eye_contact_trials = video_info.loc[video_info.gaze == "NC", :].sample(n=13, random_state=random)
     trials = pandas.concat([eye_contact_trials, no_eye_contact_trials])
     # TODO: shuffle the trials in the block
     trials["block_type"] = "majority_no_eye_contact"

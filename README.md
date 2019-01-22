@@ -1,6 +1,15 @@
 
 # Methods
 
+## Setup
+
+Install moviepy and ffmpeg.
+
+```bash
+pip install moviepy
+conda install ffmpeg -c conda-forge
+```
+
 ## Materials
 
 Stimuli are computer generated floating head models (video type = .avi).

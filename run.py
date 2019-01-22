@@ -48,7 +48,7 @@ class Experiment:
         event.waitKeys()
 
     def run_trial(self, trial):
-        mov = visual.MovieStim(self.win, filename=trial["filename"])
+        mov = visual.MovieStim3(self.win, filename=trial["filename"])
 
         self.fix.draw()
         self.win.flip()

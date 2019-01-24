@@ -13,6 +13,11 @@ def get_runtime_vars():
 
 
 class Experiment:
+    ITI = 2.0  # interstimulus interval
+    FIXATION_DELAY = 0.8
+    VIDEO_DURATION = 6.0
+
+
     def __init__(self, subj_id):
         """Initialize the experiment.
 
@@ -91,14 +96,18 @@ class Experiment:
     def run_trial(self, trial):
         mov = visual.MovieStim3(self.win, filename=trial["filename"])
 
+        # add interstimulus interval
+        self.win.flip()
+        core.wait(self.ITI)
+
         self.fix.draw()
         self.win.flip()
         self.noise.play()
-        core.wait(0.8)
+        core.wait(self.FIXATION_DELAY)
 
         key, rt = "", -1
         timer = core.Clock()
-        while timer.getTime() < 6:
+        while timer.getTime() < self.VIDEO_DURATION:
             mov.draw()
             self.win.flip()
             response = event.getKeys(keyList=["right", "left", "q"], timeStamped=timer)

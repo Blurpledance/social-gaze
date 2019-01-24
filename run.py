@@ -25,8 +25,13 @@ class Experiment:
         self.win = visual.Window(units="pix")
         self.trials = generate_trials(subj_id=subj_id)
         self.datafile = open("{subj_id}.csv".format(subj_id=subj_id), "w", 0)
+        self.breaktext = yaml.load(open("break.yaml"))
+        self.baseline = yaml.load(open("baseline.yaml"))
+        self.recording = yaml.load(open("recording.yaml"))
+        self.getready = yaml.load(open("getready.yaml"))
+        
 
-        self.fix = visual.TextStim(self.win, text="+", color="white")
+        self.fix = visual.TextStim(self.win, text="+", color="white", height=150)
         self.noise = sound.Sound("stimuli/sounds/noise.wav")
 
     def __call__(self):
@@ -35,29 +40,65 @@ class Experiment:
         >>> experiment = Experiment("SUBJ100")  # initialize the experiment
         >>> experiment()                        # call the experiment to run it
         """
+        self.show_baseline()
+        
+        self.show_recording()
+        
+        self.show_getready()
+        
         self.show_instructions()
 
         for _, trial in self.trials.iterrows():
             trial_data = self.run_trial(trial)
             self.write_trial_data(trial_data)
+            
+        cur_block = 1  # starts at block 1
+        for _, trial in self.trials.iterrows():
+            if cur_block != trial["block_ix"]:
+                self.show_break_screen()
+                cur_block = trial["block_ix"]
+                
+    def show_baseline(self):
+        baseline = visual.TextStim(self.win, text=self.baseline["baseline"], color="white")
+        baseline.draw()
+        self.win.flip()
+        event.waitKeys()
+    
+    def show_recording(self):
+        recording = visual.TextStim(self.win, text=self.recording["recording"], color="white")
+        recording.draw()
+        self.win.flip()
+        core.wait(300)
+        
+    def show_getready(self):
+        getready = visual.TextStim(self.win, text=self.getready["getready"], color="white")
+        getready.draw()
+        self.win.flip()
+        event.waitKeys()
+    
+    def show_break_screen(self):
+        break_screen = visual.TextStim(self.win, text=self.breaktext["break_screen"], color="white")
+        break_screen.draw()
+        self.win.flip()
+        event.waitKeys()
 
     def show_instructions(self):
         instructions = visual.TextStim(self.win, text=self.texts["instructions"], color="white")
         instructions.draw()
         self.win.flip()
         event.waitKeys()
-
+    
     def run_trial(self, trial):
         mov = visual.MovieStim3(self.win, filename=trial["filename"])
 
         self.fix.draw()
         self.win.flip()
         self.noise.play()
-        core.wait(0.25)
+        core.wait(0.8)
 
         key, rt = "", -1
         timer = core.Clock()
-        while timer.getTime() < 4:
+        while timer.getTime() < 6:
             mov.draw()
             self.win.flip()
             response = event.getKeys(keyList=["right", "left", "q"], timeStamped=timer)
@@ -80,12 +121,14 @@ class Experiment:
         row = ",".join(map(str, trial_data.values()))
         self.datafile.write(row + "\n")
 
-
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--subj-id")
     parser.add_argument("--show-instructions", action="store_true")
+    parser.add_argument("--show-baseline", action="store_true")
+    parser.add_argument("--show-recording", action="store_true")
+    parser.add_argument("--show-getready", action="store_true")
     parser.add_argument("--run-trial", action="store_true")
     args = parser.parse_args()
 
@@ -99,6 +142,12 @@ if __name__ == "__main__":
 
     if args.show_instructions:
         experiment.show_instructions()
+    elif args.show_baseline:
+        experiment.show_baseline()
+    elif args.show_recording:
+        experiment.show_recording()
+    elif args.show_getready:
+        experiment.show_getready()
     elif args.run_trial:
         trial_data = experiment.run_trial({"filename": "stimuli/videos/f_1_EC_L.mp4"})
         print(trial_data)

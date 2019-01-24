@@ -2,12 +2,26 @@
 instructions: |
 
   During this task, you will see a set of animated faces. You will briefly see a fixation cross and hear an orientation sound before each face is presented.
-  
+
   On some trials you will be asked to simply view the faces. On other trials, you will report whether the face turned from your left or your right, responding with the left or right arrow on the keyboard.
-  
+
   You will have a short break halfway through the study.
-  
+
   Please do your best to remain still for the duration of the time that sensors are attached to your body.
-  
-  
+
+
   (Press the spacebar when you are ready to begin.)
+recording: |
+  Collecting baseline data. Please remain still with your eyes open.
+getready: |
+  Baseline recording is now over. Please press the spacebar to begin the task.
+break_screen: |
+  There will now be a 2 minute break before the study resumes.
+baseline: |
+  Welcome to the experiment.
+
+  Before begining the task, a 5 minute baseline recording of your physiological activity will first be collected.
+
+  Please remain still with your eyes open during this 5 minute period.
+
+  (Please press the spacebar when you are ready to begin the bseline recording)

@@ -30,11 +30,6 @@ class Experiment:
         self.win = visual.Window(units="pix")
         self.trials = generate_trials(subj_id=subj_id)
         self.datafile = open("{subj_id}.csv".format(subj_id=subj_id), "w", 0)
-        self.breaktext = yaml.load(open("break.yaml"))
-        self.baseline = yaml.load(open("baseline.yaml"))
-        self.recording = yaml.load(open("recording.yaml"))
-        self.getready = yaml.load(open("getready.yaml"))
-
 
         self.fix = visual.TextStim(self.win, text="+", color="white", height=150)
         self.noise = sound.Sound("stimuli/sounds/noise.wav")
@@ -46,11 +41,8 @@ class Experiment:
         >>> experiment()                        # call the experiment to run it
         """
         self.show_baseline()
-
         self.show_recording()
-
         self.show_getready()
-
         self.show_instructions()
 
         cur_block = 1
@@ -63,34 +55,29 @@ class Experiment:
             trial_data = self.run_trial(trial)
             self.write_trial_data(trial_data)
 
+    def draw_text(self, key):
+        text = visual.TextStim(self.win, text=self.texts[key], color="white")
+        text.draw()
+        win.flip()
+
     def show_baseline(self):
-        baseline = visual.TextStim(self.win, text=self.baseline["baseline"], color="white")
-        baseline.draw()
-        self.win.flip()
+        self.draw_text("baseline")
         event.waitKeys()
 
     def show_recording(self):
-        recording = visual.TextStim(self.win, text=self.recording["recording"], color="white")
-        recording.draw()
-        self.win.flip()
+        self.draw_text("recording")
         core.wait(300)
 
     def show_getready(self):
-        getready = visual.TextStim(self.win, text=self.getready["getready"], color="white")
-        getready.draw()
-        self.win.flip()
+        self.draw_text("getready")
         event.waitKeys()
 
     def show_break_screen(self):
-        break_screen = visual.TextStim(self.win, text=self.breaktext["break_screen"], color="white")
-        break_screen.draw()
-        self.win.flip()
-        event.waitKeys()
+        self.draw_text("break_screen")
+        core.wait(120)
 
     def show_instructions(self):
-        instructions = visual.TextStim(self.win, text=self.texts["instructions"], color="white")
-        instructions.draw()
-        self.win.flip()
+        self.draw_text("instructions")
         event.waitKeys()
 
     def run_trial(self, trial):

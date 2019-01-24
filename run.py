@@ -103,10 +103,11 @@ class Experiment:
             self.win.flip()
             response = event.getKeys(keyList=["right", "left", "q"], timeStamped=timer)
             if len(response) > 0:
-                key, rt = response[0]
+                is_first_key = (key == "")
+                if is_first_key:
+                    key, rt = response[0]
                 if key == "q":
                     core.quit()
-                break
         else:
             print("no response!")
 

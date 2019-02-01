@@ -16,9 +16,10 @@ class Experiment:
     ITI = 2.0  # interstimulus interval
     FIXATION_DELAY = 0.8
     VIDEO_DURATION = 6.0
+    RECORDING_DURATION = 1
+    BREAK_SCREEN_DURATION = 1
 
-
-    def __init__(self, subj_id):
+    def __init__(self, **runtime_vars):
         """Initialize the experiment.
 
         Args:
@@ -26,10 +27,15 @@ class Experiment:
 
         >>> experiment = Experiment("SUBJ100")
         """
+        self.runtime_vars = runtime_vars
         self.texts = yaml.load(open("texts.yaml"))
         self.win = visual.Window(units="pix")
-        self.trials = generate_trials(subj_id=subj_id)
-        self.datafile = open("{subj_id}.csv".format(subj_id=subj_id), "w", 0)
+        self.trials = generate_trials(subj_id=runtime_vars["subj_id"])
+        self.datafile = open("{subj_id}.csv".format(subj_id=runtime_vars["subj_id"]), "w", 0)
+        self.datacols = self.trials.columns.tolist() + ["key", "rt"]
+
+        # write the header
+        self.datafile.write(",".join(self.datacols) + "\n")
 
         self.fix = visual.TextStim(self.win, text="+", color="white", height=150)
         self.noise = sound.Sound("stimuli/sounds/noise.wav")
@@ -58,7 +64,7 @@ class Experiment:
     def draw_text(self, key):
         text = visual.TextStim(self.win, text=self.texts[key], color="white")
         text.draw()
-        win.flip()
+        self.win.flip()
 
     def show_baseline(self):
         self.draw_text("baseline")
@@ -66,7 +72,7 @@ class Experiment:
 
     def show_recording(self):
         self.draw_text("recording")
-        core.wait(300)
+        core.wait(self.RECORDING_DURATION)
 
     def show_getready(self):
         self.draw_text("getready")
@@ -74,7 +80,7 @@ class Experiment:
 
     def show_break_screen(self):
         self.draw_text("break_screen")
-        core.wait(120)
+        core.wait(self.BREAK_SCREEN_DURATION)
 
     def show_instructions(self):
         self.draw_text("instructions")
@@ -104,19 +110,24 @@ class Experiment:
                     key, rt = response[0]
                 if key == "q":
                     core.quit()
-        else:
-            print("no response!")
 
         trial_data = {
             "key": key,
             "rt": rt,
         }
+        trial_data.update(self.runtime_vars)
+        trial_data.update(trial)
 
         return trial_data
 
     def write_trial_data(self, trial_data):
-        row = ",".join(map(str, trial_data.values()))
+        trial_data_strs = []
+        for col_name in self.datacols:
+            trial_data_strs.append(str(trial_data[col_name]))
+
+        row = ",".join(trial_data_strs)
         self.datafile.write(row + "\n")
+
 
 if __name__ == "__main__":
     import argparse
@@ -132,10 +143,11 @@ if __name__ == "__main__":
     subj_id = args.subj_id
     if subj_id is None:
         runtime_vars = get_runtime_vars()
-        subj_id = runtime_vars["subj_id"]
+    else:
+        runtime_vars = dict(subj_id=subj_id)
 
     # Initialize the experiment
-    experiment = Experiment(subj_id=subj_id)
+    experiment = Experiment(**runtime_vars)
 
     if args.show_instructions:
         experiment.show_instructions()

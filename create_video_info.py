@@ -3,6 +3,18 @@
 import os
 import pandas
 
+stim_codes = {
+    "gender": {"m": 0, "f": 1},
+    "gaze": {"NC": 0, "EC": 1},
+    "direction": {"L": 0, "R": 1},
+}
+
+def create_stim_code(row):
+    stim_code_values = []
+    for col_name, map in stim_codes.items():
+        stim_code_values.append(str(map[row[col_name]]))
+    return ''.join(stim_code_values)
+
 
 def create_stim_info():
     filenames = [x for x in os.listdir("stimuli/videos") if x.endswith(".mp4")]
@@ -22,6 +34,7 @@ def create_stim_info():
     # convert strings to numbers
     stim_info.loc[:, "person_id"] = pandas.to_numeric(stim_info.loc[:, "person_id"])
 
+    stim_info["stim_code"] = stim_info.apply(create_stim_code, axis=1)
 
     return stim_info
 

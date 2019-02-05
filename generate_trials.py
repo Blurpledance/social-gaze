@@ -5,7 +5,7 @@ import numpy
 
 
 # read in the video info
-video_info = pandas.read_csv("video_info.csv")
+video_info = pandas.read_csv("video_info.csv", dtype={"stim_code": str})
 
 
 def generate_trials(subj_id, seed=None):
@@ -33,6 +33,9 @@ def generate_trials(subj_id, seed=None):
     # insert additional columns
     trials.insert(0, "subj_id", subj_id)
     trials.insert(1, "trial_ix", list(range(len(trials))))
+
+    # trials["stim_code"] = sexCode+raceCode+sideCode+speedCode+gazeCode+instructCode+blockCode
+
 
     # add path to filename
     trials.loc[:, "filename"] = trials.filename.apply(lambda filename: os.path.join("stimuli/videos", filename))

@@ -1,7 +1,11 @@
 import yaml
-from psychopy import visual, event, core, sound, gui
+from psychopy import visual, event, core, sound, gui, parallel
 
 from generate_trials import generate_trials
+
+
+parallel.setPortAddress(0XD020)
+parallel.setData(0)
 
 
 def get_runtime_vars():
@@ -67,6 +71,7 @@ class Experiment:
         self.win.flip()
 
     def show_baseline(self):
+        parallel.setData(int('10000000', 2))
         self.draw_text("baseline")
         event.waitKeys()
 
@@ -87,6 +92,7 @@ class Experiment:
         event.waitKeys()
 
     def run_trial(self, trial):
+        parallel.setData(0)
         mov = visual.MovieStim3(self.win, filename=trial["filename"])
 
         # add interstimulus interval
@@ -97,6 +103,8 @@ class Experiment:
         self.win.flip()
         self.noise.play()
         core.wait(self.FIXATION_DELAY)
+
+        parallel.setData(int(trial["stim_code"], 2))
 
         key, rt = "", -1
         timer = core.Clock()

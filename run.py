@@ -71,7 +71,7 @@ class Experiment:
         self.win.flip()
 
     def show_baseline(self):
-        parallel.setData(int('10000000', 2))
+        parallel.setData(int('0001', 2))
         self.draw_text("baseline")
         event.waitKeys()
 

@@ -20,8 +20,8 @@ class Experiment:
     ITI = 2.0  # interstimulus interval
     FIXATION_DELAY = 0.8
     VIDEO_DURATION = 6.0
-    RECORDING_DURATION = 1
-    BREAK_SCREEN_DURATION = 1
+    RECORDING_DURATION = 10
+    BREAK_SCREEN_DURATION = 10
 
     def __init__(self, **runtime_vars):
         """Initialize the experiment.
@@ -71,7 +71,7 @@ class Experiment:
         self.win.flip()
 
     def show_baseline(self):
-        parallel.setData(int('0001', 2))
+        parallel.setData(int('1', 2))
         self.draw_text("baseline")
         event.waitKeys()
 

@@ -25,3 +25,6 @@ baseline: |
   Please remain still with your eyes open during this 5 minute period.
 
   (Please press the spacebar when you are ready to begin the baseline recording)
+closing: |
+    The physiology portion of the study is now over. Your final task is to complete a series of short surveys.
+    Press spacebar to close this window and the experimenter will open the surveys for you.

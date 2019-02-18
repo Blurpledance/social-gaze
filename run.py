@@ -20,8 +20,9 @@ class Experiment:
     ITI = 2.0  # interstimulus interval
     FIXATION_DELAY = 0.8
     VIDEO_DURATION = 6.0
-    RECORDING_DURATION = 5
-    BREAK_SCREEN_DURATION = 5
+    RECORDING_DURATION = 300
+    BREAK_SCREEN_DURATION = 120
+    url = 'https://uwmadison.co1.qualtrics.com/jfe/form/SV_bwKVmyA3XdivKBL'
 
     def __init__(self, **runtime_vars):
         """Initialize the experiment.
@@ -54,6 +55,7 @@ class Experiment:
         self.show_recording()
         self.show_getready()
         self.show_instructions()
+        self.show_closing()
 
         cur_block = 1
         for _, trial in self.trials.iterrows():
@@ -130,6 +132,7 @@ class Experiment:
 
         return trial_data
 
+
     def write_trial_data(self, trial_data):
         trial_data_strs = []
         for col_name in self.datacols:
@@ -138,6 +141,10 @@ class Experiment:
         row = ",".join(trial_data_strs)
         self.datafile.write(row + "\n")
 
+    def show_closing(self):
+        parallel.setData(0)
+        self.draw_text("closing")
+        event.waitKeys()
 
 if __name__ == "__main__":
     import argparse
@@ -148,6 +155,7 @@ if __name__ == "__main__":
     parser.add_argument("--show-recording", action="store_true")
     parser.add_argument("--show-getready", action="store_true")
     parser.add_argument("--run-trial", action="store_true")
+    parser.add_argument("--show-closing", action="store_true")
     args = parser.parse_args()
 
     subj_id = args.subj_id
@@ -163,6 +171,8 @@ if __name__ == "__main__":
         experiment.show_instructions()
     elif args.show_baseline:
         experiment.show_baseline()
+    elif args.show_closing:
+	    experiment.show_closing()
     elif args.show_recording:
         experiment.show_recording()
     elif args.show_getready:

@@ -20,8 +20,8 @@ class Experiment:
     ITI = 2.0  # interstimulus interval
     FIXATION_DELAY = 0.8
     VIDEO_DURATION = 6.0
-    RECORDING_DURATION = 10
-    BREAK_SCREEN_DURATION = 10
+    RECORDING_DURATION = 5
+    BREAK_SCREEN_DURATION = 5
 
     def __init__(self, **runtime_vars):
         """Initialize the experiment.
@@ -33,7 +33,7 @@ class Experiment:
         """
         self.runtime_vars = runtime_vars
         self.texts = yaml.load(open("texts.yaml"))
-        self.win = visual.Window(units="pix")
+        self.win = visual.Window(units="pix", fullscr=True, color=(-1,-1,-1), mouseVisible=False)
         self.trials = generate_trials(subj_id=runtime_vars["subj_id"])
         self.datafile = open("{subj_id}.csv".format(subj_id=runtime_vars["subj_id"]), "w", 0)
         self.datacols = self.trials.columns.tolist() + ["key", "rt"]
@@ -71,19 +71,21 @@ class Experiment:
         self.win.flip()
 
     def show_baseline(self):
-        parallel.setData(int('1', 2))
         self.draw_text("baseline")
         event.waitKeys()
 
     def show_recording(self):
+        parallel.setData(int('1', 2))
         self.draw_text("recording")
         core.wait(self.RECORDING_DURATION)
 
     def show_getready(self):
+        parallel.setData(0)
         self.draw_text("getready")
         event.waitKeys()
 
     def show_break_screen(self):
+        parallel.setData(0)
         self.draw_text("break_screen")
         core.wait(self.BREAK_SCREEN_DURATION)
 
